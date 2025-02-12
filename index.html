@@ -12,6 +12,7 @@
             <h1>Let's Play Tic Tac Toe!</h1>
             <div class="winner-announcement"></div>
             <div class="gameplay-instructions"></div>
+            <div class="name-of-players"></div>
         </div>
         <div class="gameboard">
             <button class="btnSquare" id="0"></button>
@@ -27,6 +28,19 @@
 
         <div class="user-buttons">
             <button class="resetBtn">Restart Game</button>
+            <button class="changeNames">Change Player Names</button>
+            <dialog id="changePlayerNames">
+                <form method="dialog">
+                    <label for="player1">Player 1 (required): </label>
+                    <input type="text" id="player1" value="Player 1" required>
+                    <label for="player2">Player 2 (required): </label>
+                    <input type="text" id="player2" value="Player 2" required>
+                    <div class="dialog-buttons">
+                        <button class="dialog-btns" id="confirm">Confirm</button>
+                        <button class="dialog-btns" id="cancel" formmethod="dialog">Cancel</button>
+                    </div>
+                </form>
+            </dialog>
         </div>
     </div>
 

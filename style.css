@@ -28,6 +28,17 @@ h1 {
 }
 
 .resetBtn {
-    height: 2rem;
-    width: 100%;
+    height: 40px;
+    width: 80px;
+}
+
+.changeNames {
+    width: 100px;
+    height: 40px;
+}
+
+.user-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }

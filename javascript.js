@@ -1,6 +1,14 @@
 const btnSquares = document.querySelectorAll(".btnSquare");
 const gameInstructions = document.querySelector(".gameplay-instructions");
 const winnerAnnouncement = document.querySelector(".winner-announcement");
+const changeNames = document.querySelector(".changeNames");
+const changeNamesDialog = document.querySelector("#changePlayerNames");
+const player1Var = document.querySelector("#player1");
+const player2Var = document.querySelector("#player2");
+const confirmNamesBtn = document.querySelector("#confirm");
+const cancelDialogBtn = document.querySelector("#cancel");
+const form = document.querySelector("form");
+const nameOfPlayersBox = document.querySelector(".name-of-players");
 
 function GameBoard() {
 
@@ -31,7 +39,8 @@ function GameBoard() {
 
         btnSquares.forEach(button => button.textContent = "");
         btnSquares.forEach(button => button.disabled = false);
-        gameInstructions.textContent = "Player 1's Turn.";
+        gameInstructions.textContent = `${player1.name}'s Turn`;
+        console.log("Player 1's Turn");
         winnerAnnouncement.textContent = "";
 
         return gameboard;
@@ -39,7 +48,8 @@ function GameBoard() {
 
     // start the game with new gameboard
     resetGameBoard();
-    gameInstructions.textContent = "Player 1's Turn";
+    gameInstructions.textContent = `${player1.name}'s Turn`;
+    console.log("Player 1's Turn");
 
     // select index of array where addMarker can be run 
     // add marker of currentPlayer
@@ -65,12 +75,12 @@ function GameBoard() {
         while (winner == 0) {
             if (currentPlayer === player1) {
                 currentPlayer = player2;
-                gameInstructions.textContent = "Player 2's Turn.";
+                gameInstructions.textContent = `${player2.name}'s Turn`;
                 console.log("Player 2's Turn");
                 break;
             } else {
                 currentPlayer = player1;
-                gameInstructions.textContent = "Player 1's Turn.";
+                gameInstructions.textContent = `${player1.name}'s Turn`;
                 console.log("Player 1's Turn");
                 break;
             }
@@ -123,7 +133,7 @@ function GameBoard() {
         return currentPlayer.marker;
     }
 
-    return { resetGameBoard, playTurn, switchPlayer, getWinner, getCurrentPlayerMarker }
+    return { resetGameBoard, playTurn, switchPlayer, getWinner, getCurrentPlayerMarker, player1, player2, currentPlayer }
 }
 
 let game = GameBoard();
@@ -149,3 +159,44 @@ const resetBtn = document.querySelector(".resetBtn");
 resetBtn.addEventListener("click", () => {
     game.resetGameBoard()
 });
+
+// changeNames button opens up the dialog with the form 
+changeNames.addEventListener("click", () => {
+    changeNamesDialog.showModal();
+})
+
+let oldPlayer1 = game.player1.name;
+let oldPlayer2 = game.player2.name;
+
+// Cancel button triggers close of dialog due to formmethod = "dialog" in HTML
+// Default value is the value of the confirmNamesBtn prior to name changes
+changeNamesDialog.addEventListener("close", () => {
+    nameOfPlayersBox.textContent = changeNamesDialog.returnValue === `default` 
+    ? `No names were changed.` 
+    : `Player names: ${changeNamesDialog.returnValue}`; 
+
+    if (gameInstructions.textContent == `${oldPlayer1}'s Turn`) {
+        gameInstructions.textContent = `${player1Var.value}'s Turn`;
+    } else {
+        gameInstructions.textContent = `${player2Var.value}'s Turn`;
+    }
+})
+
+confirmNamesBtn.addEventListener("click", (event) => {
+    event.preventDefault(); // prevent default submit action of buttons
+
+    if (!form.checkValidity()) {
+        alert("Please fill out all of the required elements.");
+    } else {
+        oldPlayer1 = game.player1.name;
+        oldPlayer2 = game.player2.name;
+        game.player1.name = player1Var.value;
+        game.player2.name = player2Var.value;
+
+        changeNamesDialog.close(`${game.player1.name} and ${game.player2.name}.`);
+    }
+})
+
+cancelDialogBtn.addEventListener("click", () => {
+    changeNamesDialog.close(`default`);
+})
