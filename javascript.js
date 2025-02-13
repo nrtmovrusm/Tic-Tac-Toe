@@ -186,7 +186,11 @@ confirmNamesBtn.addEventListener("click", (event) => {
         game.player1.name = player1Var.value;
         game.player2.name = player2Var.value;
 
-        changeNamesDialog.close(`${game.player1.name} and ${game.player2.name}.`);
+        if (game.player1.name === game.player2.name) {
+            alert("Names cannot be the same. Please modify the names");
+        } else {
+            changeNamesDialog.close(`${game.player1.name} and ${game.player2.name}.`);
+        }
     }
 })
 
