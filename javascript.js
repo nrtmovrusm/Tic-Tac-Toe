@@ -40,8 +40,8 @@ function GameBoard() {
         btnSquares.forEach(button => button.textContent = "");
         btnSquares.forEach(button => button.disabled = false);
         gameInstructions.textContent = `${player1.name}'s Turn`;
-        console.log("Player 1's Turn");
         winnerAnnouncement.textContent = "";
+        nameOfPlayersBox.textContent = "";
 
         return gameboard;
     }
@@ -49,14 +49,12 @@ function GameBoard() {
     // start the game with new gameboard
     resetGameBoard();
     gameInstructions.textContent = `${player1.name}'s Turn`;
-    console.log("Player 1's Turn");
 
     // select index of array where addMarker can be run 
     // add marker of currentPlayer
     function playTurn(index) {
         if (gameboard[index] == 0) {
             gameboard[index] = currentPlayer.marker;
-            console.log(gameboard);
         } else {
             gameInstructions.textContent = "Square is taken. Pick another square.";
             if (currentPlayer === player1) {
@@ -76,19 +74,16 @@ function GameBoard() {
             if (currentPlayer === player1) {
                 currentPlayer = player2;
                 gameInstructions.textContent = `${player2.name}'s Turn`;
-                console.log("Player 2's Turn");
                 break;
             } else {
                 currentPlayer = player1;
                 gameInstructions.textContent = `${player1.name}'s Turn`;
-                console.log("Player 1's Turn");
                 break;
             }
         }
 
         if (winner == 1 || winner == 2) {
             gameInstructions.textContent = "Game has ended.";
-            console.log("Game has ended.");
             
             //disable all buttons after game has concluded
             btnSquares.forEach(button => {
@@ -110,14 +105,12 @@ function GameBoard() {
             (gameboard[2] === gameboard[5] && gameboard[5] === gameboard[8] && gameboard[8] !== 0)) {
                 let winningPlayer = currentPlayer.name;
                 winnerAnnouncement.textContent = `Congrats! ${winningPlayer} has won!`;
-                console.log(`Congrats! ${currentPlayer.name} has won!`);
                 winner = 1;
                 return;
             // check if all "0" empty squares have been taken and no winner
             } else if (!gameboard.some(square => square === 0)) {
                 winnerAnnouncement.textContent = `Tie game!`;
                 gameInstructions.textContent = "Tie game!";
-                console.log("Tie game!");
                 winner = 2;
                 return;
             } else {
@@ -172,7 +165,7 @@ let oldPlayer2 = game.player2.name;
 // Default value is the value of the confirmNamesBtn prior to name changes
 changeNamesDialog.addEventListener("close", () => {
     nameOfPlayersBox.textContent = changeNamesDialog.returnValue === `default` 
-    ? `No names were changed.` 
+    ? `No names were changed. Player names: ${oldPlayer1} and ${oldPlayer2}` 
     : `Player names: ${changeNamesDialog.returnValue}`; 
 
     if (gameInstructions.textContent == `${oldPlayer1}'s Turn`) {
@@ -198,5 +191,10 @@ confirmNamesBtn.addEventListener("click", (event) => {
 })
 
 cancelDialogBtn.addEventListener("click", () => {
+    // return's previously confirmed names
+    player1Var.value = game.player1.name;
+    player2Var.value = game.player2.name;
+    oldPlayer1 = game.player1.name;
+    oldPlayer2 = game.player2.name;
     changeNamesDialog.close(`default`);
 })
